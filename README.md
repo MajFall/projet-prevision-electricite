@@ -1,5 +1,11 @@
 # Prévision de la consommation électrique en France métropolitaine
 
+## Liens
+
+- Rapport (Word en ligne, Office 365) : [https://univlyon2fr-my.sharepoint.com/:w:/g/personal/mfall10_univ-lyon2_fr/IQCRNOWIFuxoT7JgUh8RE4MnAeE63El1gMfPsg5IRWHc-gI?e=f8ry4D]
+- Diapositives de l'oral : [lien, quand elles existeront]
+
+
 Projet de données temporelles, groupe : Madjiguène, Alioune.
 
 ## 1. Problème de prévision
