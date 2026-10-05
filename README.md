@@ -16,11 +16,11 @@ Projet de données temporelles (groupe : NOM1, NOM2).
 
 ## Ordre d'exécution
 Tout lancer : `source("run_all.R")`, ou étape par étape :
-1. `src/01_download.R` (long : téléchargement)
+1. `src/01_download.R`   (long : téléchargement)
 2. `src/02_prepare.R`
 3. `src/03_features.R`
 4. `src/04_benchmarks.R`
-5. `src/05_models.R` (long : entraînement)
+5. `src/05_models.R`     (long : entraînement)
 6. `src/06_evaluate.R`
 
 ## Organisation des fichiers

@@ -48,3 +48,15 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Données (récupérées par les scripts, trop volumineuses)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Divers R
+.Rproj.user/
+.Rhistory
+.RData
+.DS_Store
