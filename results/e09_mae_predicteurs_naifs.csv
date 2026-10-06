@@ -1,0 +1,123 @@
+cible,h_loc,predicteur,mae_mw
+Cible : lundi à vendredi,0,Dernier relevé connu (12 h),6358
+Cible : lundi à vendredi,0,Même heure 7 jours avant,3142
+Cible : lundi à vendredi,0,Même heure la veille (si h <= 12),1490
+Cible : lundi à vendredi,1,Dernier relevé connu (12 h),9757
+Cible : lundi à vendredi,1,Même heure 7 jours avant,3180
+Cible : lundi à vendredi,1,Même heure la veille (si h <= 12),1434
+Cible : lundi à vendredi,2,Dernier relevé connu (12 h),10608
+Cible : lundi à vendredi,2,Même heure 7 jours avant,3248
+Cible : lundi à vendredi,2,Même heure la veille (si h <= 12),1455
+Cible : lundi à vendredi,3,Dernier relevé connu (12 h),12710
+Cible : lundi à vendredi,3,Même heure 7 jours avant,3268
+Cible : lundi à vendredi,3,Même heure la veille (si h <= 12),1480
+Cible : lundi à vendredi,4,Dernier relevé connu (12 h),13887
+Cible : lundi à vendredi,4,Même heure 7 jours avant,3275
+Cible : lundi à vendredi,4,Même heure la veille (si h <= 12),1540
+Cible : lundi à vendredi,5,Dernier relevé connu (12 h),12910
+Cible : lundi à vendredi,5,Même heure 7 jours avant,3354
+Cible : lundi à vendredi,5,Même heure la veille (si h <= 12),1759
+Cible : lundi à vendredi,6,Dernier relevé connu (12 h),9443
+Cible : lundi à vendredi,6,Même heure 7 jours avant,3524
+Cible : lundi à vendredi,6,Même heure la veille (si h <= 12),2337
+Cible : lundi à vendredi,7,Dernier relevé connu (12 h),5422
+Cible : lundi à vendredi,7,Même heure 7 jours avant,3784
+Cible : lundi à vendredi,7,Même heure la veille (si h <= 12),3165
+Cible : lundi à vendredi,8,Dernier relevé connu (12 h),3851
+Cible : lundi à vendredi,8,Même heure 7 jours avant,3846
+Cible : lundi à vendredi,8,Même heure la veille (si h <= 12),3478
+Cible : lundi à vendredi,9,Dernier relevé connu (12 h),3231
+Cible : lundi à vendredi,9,Même heure 7 jours avant,3780
+Cible : lundi à vendredi,9,Même heure la veille (si h <= 12),3240
+Cible : lundi à vendredi,10,Dernier relevé connu (12 h),2786
+Cible : lundi à vendredi,10,Même heure 7 jours avant,3675
+Cible : lundi à vendredi,10,Même heure la veille (si h <= 12),2857
+Cible : lundi à vendredi,11,Dernier relevé connu (12 h),2476
+Cible : lundi à vendredi,11,Même heure 7 jours avant,3594
+Cible : lundi à vendredi,11,Même heure la veille (si h <= 12),2607
+Cible : lundi à vendredi,12,Dernier relevé connu (12 h),2416
+Cible : lundi à vendredi,12,Même heure 7 jours avant,3513
+Cible : lundi à vendredi,12,Même heure la veille (si h <= 12),2416
+Cible : lundi à vendredi,13,Dernier relevé connu (12 h),2544
+Cible : lundi à vendredi,13,Même heure 7 jours avant,3461
+Cible : lundi à vendredi,14,Dernier relevé connu (12 h),3063
+Cible : lundi à vendredi,14,Même heure 7 jours avant,3471
+Cible : lundi à vendredi,15,Dernier relevé connu (12 h),3943
+Cible : lundi à vendredi,15,Même heure 7 jours avant,3468
+Cible : lundi à vendredi,16,Dernier relevé connu (12 h),4825
+Cible : lundi à vendredi,16,Même heure 7 jours avant,3504
+Cible : lundi à vendredi,17,Dernier relevé connu (12 h),5109
+Cible : lundi à vendredi,17,Même heure 7 jours avant,3571
+Cible : lundi à vendredi,18,Dernier relevé connu (12 h),4397
+Cible : lundi à vendredi,18,Même heure 7 jours avant,3650
+Cible : lundi à vendredi,19,Dernier relevé connu (12 h),3806
+Cible : lundi à vendredi,19,Même heure 7 jours avant,3620
+Cible : lundi à vendredi,20,Dernier relevé connu (12 h),3937
+Cible : lundi à vendredi,20,Même heure 7 jours avant,3472
+Cible : lundi à vendredi,21,Dernier relevé connu (12 h),5346
+Cible : lundi à vendredi,21,Même heure 7 jours avant,3322
+Cible : lundi à vendredi,22,Dernier relevé connu (12 h),6245
+Cible : lundi à vendredi,22,Même heure 7 jours avant,3220
+Cible : lundi à vendredi,23,Dernier relevé connu (12 h),5173
+Cible : lundi à vendredi,23,Même heure 7 jours avant,3163
+Cible : samedi et dimanche,0,Dernier relevé connu (12 h),5486
+Cible : samedi et dimanche,0,Même heure 7 jours avant,2947
+Cible : samedi et dimanche,0,Même heure la veille (si h <= 12),1656
+Cible : samedi et dimanche,1,Dernier relevé connu (12 h),9033
+Cible : samedi et dimanche,1,Même heure 7 jours avant,2962
+Cible : samedi et dimanche,1,Même heure la veille (si h <= 12),1586
+Cible : samedi et dimanche,2,Dernier relevé connu (12 h),10229
+Cible : samedi et dimanche,2,Même heure 7 jours avant,3001
+Cible : samedi et dimanche,2,Même heure la veille (si h <= 12),1681
+Cible : samedi et dimanche,3,Dernier relevé connu (12 h),12676
+Cible : samedi et dimanche,3,Même heure 7 jours avant,3021
+Cible : samedi et dimanche,3,Même heure la veille (si h <= 12),1818
+Cible : samedi et dimanche,4,Dernier relevé connu (12 h),14342
+Cible : samedi et dimanche,4,Même heure 7 jours avant,3014
+Cible : samedi et dimanche,4,Même heure la veille (si h <= 12),2021
+Cible : samedi et dimanche,5,Dernier relevé connu (12 h),14651
+Cible : samedi et dimanche,5,Même heure 7 jours avant,3043
+Cible : samedi et dimanche,5,Même heure la veille (si h <= 12),2574
+Cible : samedi et dimanche,6,Dernier relevé connu (12 h),13906
+Cible : samedi et dimanche,6,Même heure 7 jours avant,3101
+Cible : samedi et dimanche,6,Même heure la veille (si h <= 12),3972
+Cible : samedi et dimanche,7,Dernier relevé connu (12 h),12691
+Cible : samedi et dimanche,7,Même heure 7 jours avant,3188
+Cible : samedi et dimanche,7,Même heure la veille (si h <= 12),5949
+Cible : samedi et dimanche,8,Dernier relevé connu (12 h),10876
+Cible : samedi et dimanche,8,Même heure 7 jours avant,3247
+Cible : samedi et dimanche,8,Même heure la veille (si h <= 12),6760
+Cible : samedi et dimanche,9,Dernier relevé connu (12 h),8339
+Cible : samedi et dimanche,9,Même heure 7 jours avant,3252
+Cible : samedi et dimanche,9,Même heure la veille (si h <= 12),6239
+Cible : samedi et dimanche,10,Dernier relevé connu (12 h),6487
+Cible : samedi et dimanche,10,Même heure 7 jours avant,3183
+Cible : samedi et dimanche,10,Même heure la veille (si h <= 12),5340
+Cible : samedi et dimanche,11,Dernier relevé connu (12 h),5536
+Cible : samedi et dimanche,11,Même heure 7 jours avant,3103
+Cible : samedi et dimanche,11,Même heure la veille (si h <= 12),4718
+Cible : samedi et dimanche,12,Dernier relevé connu (12 h),4142
+Cible : samedi et dimanche,12,Même heure 7 jours avant,3042
+Cible : samedi et dimanche,12,Même heure la veille (si h <= 12),4142
+Cible : samedi et dimanche,13,Dernier relevé connu (12 h),4208
+Cible : samedi et dimanche,13,Même heure 7 jours avant,2968
+Cible : samedi et dimanche,14,Dernier relevé connu (12 h),6768
+Cible : samedi et dimanche,14,Même heure 7 jours avant,2881
+Cible : samedi et dimanche,15,Dernier relevé connu (12 h),8448
+Cible : samedi et dimanche,15,Même heure 7 jours avant,2841
+Cible : samedi et dimanche,16,Dernier relevé connu (12 h),9699
+Cible : samedi et dimanche,16,Même heure 7 jours avant,2873
+Cible : samedi et dimanche,17,Dernier relevé connu (12 h),9688
+Cible : samedi et dimanche,17,Même heure 7 jours avant,2953
+Cible : samedi et dimanche,18,Dernier relevé connu (12 h),7713
+Cible : samedi et dimanche,18,Même heure 7 jours avant,3084
+Cible : samedi et dimanche,19,Dernier relevé connu (12 h),5494
+Cible : samedi et dimanche,19,Même heure 7 jours avant,3189
+Cible : samedi et dimanche,20,Dernier relevé connu (12 h),5676
+Cible : samedi et dimanche,20,Même heure 7 jours avant,3173
+Cible : samedi et dimanche,21,Dernier relevé connu (12 h),6957
+Cible : samedi et dimanche,21,Même heure 7 jours avant,3095
+Cible : samedi et dimanche,22,Dernier relevé connu (12 h),7495
+Cible : samedi et dimanche,22,Même heure 7 jours avant,3021
+Cible : samedi et dimanche,23,Dernier relevé connu (12 h),5519
+Cible : samedi et dimanche,23,Même heure 7 jours avant,2990
