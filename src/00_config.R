@@ -18,6 +18,10 @@ DATE_FIN   <- as.Date("2025-12-31")   # dernier jour local étudié
 FIN_APPRENTISSAGE <- as.Date("2023-12-31")
 FIN_VALIDATION    <- as.Date("2024-12-31")
 
+# Premier confinement : exclu de l'APPRENTISSAGE seulement (jamais de la validation ni du test)
+CONFINEMENT_DEBUT <- as.Date("2020-03-17")
+CONFINEMENT_FIN   <- as.Date("2020-05-11")
+
 # ---- Origine de prévision et latences (utilisées dans 03_features.R) ---------
 ORIGINE_HEURE_LOCALE <- 14   # 14h00 heure locale du jour J
 LATENCE_CONSO_H <- 1  # une heure de conso n'est utilisable qu'1 h après sa fin
@@ -30,6 +34,10 @@ ECO2MIX_URL <- paste0(
   ECO2MIX_DATASET,
   "/exports/csv?select=date_heure%2Cconsommation",
   "&order_by=date_heure&delimiter=%3B&timezone=UTC")
+
+# Calendrier scolaire officiel (Éducation nationale) : une ligne par période de vacances et par zone
+SCOLAIRE_URL <- paste0("https://data.education.gouv.fr/api/explore/v2.1/catalog/datasets/",
+                       "fr-en-calendrier-scolaire/exports/csv?delimiter=%3B")
 
 SYNOP_BASE_URL <- "https://donneespubliques.meteofrance.fr/donnees_libres/Txt/Synop/Archive"
 
@@ -60,6 +68,7 @@ DIR_RAW   <- "data/raw"
 DIR_PROC  <- "data/processed"
 DIR_OUT   <- "results"
 F_ECO     <- file.path(DIR_RAW, "eco2mix_cons_def.csv")
+F_SCOLAIRE <- file.path(DIR_RAW, "calendrier_scolaire.csv")
 F_MASTER  <- file.path(DIR_PROC, "master_horaire.rds")
 for (d in c(DIR_RAW, file.path(DIR_RAW, "synop"), DIR_PROC, DIR_OUT))
   dir.create(d, recursive = TRUE, showWarnings = FALSE)

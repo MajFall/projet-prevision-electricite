@@ -85,6 +85,8 @@ cibles <- master %>%
             conso_cible = conso_mw,
             annee, mois, jour_annee, jour_sem, weekend, ferie, pont,
             veille_ferie, lendemain_ferie, jour_ouvre, creux_fin_annee,
+            n_zones_vacances,          # nombre de zones A/B/C en vacances (0 à 3), connu à l'avance
+            confinement,               # jour du premier confinement (sert à l'exclusion ci-dessous)
             parf_temp_horaire = temp_interp_oracle, parf_temp_moy_jour)
 
 # Source des retards : une valeur par (date locale, heure locale) ; un jour de
@@ -111,6 +113,10 @@ cas <- cibles %>%
   mutate(jeu = case_when(date_cible <= FIN_APPRENTISSAGE ~ "apprentissage",
                          date_cible <= FIN_VALIDATION    ~ "validation",
                          TRUE                            ~ "test"),
+         # Les jours du premier confinement sont exclus de l'APPRENTISSAGE seulement :
+         # les modèles s'ajustent sur les lignes où utilise_apprentissage vaut TRUE.
+         # Validation et test ne sont pas modifiés.
+         utilise_apprentissage = jeu == "apprentissage" & !confinement,
          score_principal = !jour_chgt_heure & !is.na(conso_cible)) %>%
   arrange(heure_utc)
 
@@ -133,7 +139,8 @@ cas <- cas %>% select(-t_meteo_utilisee, -lim_meteo_utc)
 # ---------------------------------------------------------------------
 VARS <- list(
   calendrier = c("h_loc", "jour_sem", "mois", "jour_annee", "weekend", "ferie", "pont",
-                 "veille_ferie", "lendemain_ferie", "jour_ouvre", "creux_fin_annee"),
+                 "veille_ferie", "lendemain_ferie", "jour_ouvre", "creux_fin_annee",
+                 "n_zones_vacances"),
   retards    = c("conso_lag1", "conso_lag7", "conso_derniere", "conso_moy_24h", "conso_moy_7j"),
   meteo_operationnelle = c("temp_derniere", "temp_moy_24h", "temp_moy_72h", "vent_derniere", "hum_derniere"),
   meteo_parfaite       = c("parf_temp_horaire", "parf_temp_moy_jour"))
@@ -150,6 +157,9 @@ write_csv(na_par_var, file.path(DIR_OUT, "f01_valeurs_manquantes_features.csv"))
 
 message("Cas horaires : ", nrow(cas), " lignes (", sum(cas$score_principal), " dans le score principal)")
 message("Répartition : ", paste(names(table(cas$jeu)), table(cas$jeu), sep = "=", collapse = ", "))
+message("Apprentissage : ", sum(cas$jeu == "apprentissage"), " lignes, dont ",
+        sum(cas$jeu == "apprentissage" & cas$confinement), " exclues (confinement) -> ",
+        sum(cas$utilise_apprentissage), " utilisées")
 print(as.data.frame(na_par_var))
 
 # Jours sans moyenne de température observée (météo parfaite indisponible)

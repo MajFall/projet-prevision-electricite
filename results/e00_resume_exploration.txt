@@ -13,6 +13,10 @@ E6 Pont : rapport médian 0.965 (19 jours)
 E6 Férié (en semaine) : rapport médian 0.907 (59 jours)
 E6 Samedi : rapport médian 0.931 (361 jours)
 E6 Dimanche : rapport médian 0.889 (346 jours)
+E6c vacances, 0 zone(s) : écart médian 0.31 GW (1095 jours)
+E6c vacances, 1 zone(s) : écart médian -0.33 GW (123 jours)
+E6c vacances, 2 zone(s) : écart médian -0.26 GW (127 jours)
+E6c vacances, 3 zone(s) : écart médian -0.46 GW (366 jours)
 E7 écart à 2019 (%) par année : 2018=0.8, 2019=0, 2020=-4.6, 2021=-3.4, 2022=-4.1, 2023=-5.8, 2024=-5.5
 E8 ACF horaire : retard 1 h = 0.982, 24 h = 0.935, 168 h = 0.893
 E8 ACF journalière : retard 1 j = 0.948, 7 j = 0.885, 14 j = 0.804
@@ -24,4 +28,3 @@ E9 MAE moyenne, Cible : lundi à vendredi, Même heure la veille (si h <= 12) : 
 E9 MAE moyenne, Cible : samedi et dimanche, Dernier relevé connu (12 h) : 8586 MW
 E9 MAE moyenne, Cible : samedi et dimanche, Même heure 7 jours avant : 3049 MW
 E9 MAE moyenne, Cible : samedi et dimanche, Même heure la veille (si h <= 12) : 3728 MW
-Toutes les figures ont été produites sans erreur.

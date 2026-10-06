@@ -10,6 +10,7 @@ veille_ferie,0,0
 lendemain_ferie,0,0
 jour_ouvre,0,0
 creux_fin_annee,0,0
+n_zones_vacances,0,0
 conso_lag1,31963,45.84
 conso_lag7,152,0.22
 conso_derniere,0,0
