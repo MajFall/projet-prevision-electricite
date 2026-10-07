@@ -1,0 +1,30 @@
+Période explorée : 2018-01-01 -> 2024-12-31 (test 2025 exclu)
+E1 tendance 365 j : min 49.4 GW (2023-10-17), max 54.9 GW (2018-08-06)
+E2 jour ouvré, Hiver : minimum à 4 h, maximum à 19 h, amplitude 16.3 GW
+E2 jour ouvré, Printemps : minimum à 4 h, maximum à 9 h, amplitude 13.5 GW
+E2 jour ouvré, Été : minimum à 4 h, maximum à 13 h, amplitude 16.5 GW
+E2 jour ouvré, Automne : minimum à 4 h, maximum à 12 h, amplitude 16.4 GW
+E3 conso journalière moyenne (GW), lun à dim : 53.4 / 54.2 / 54.2 / 54.2 / 53.7 / 48.9 / 47
+E4 mois le plus consommateur : 1 (67.5 GW) ; le moins : 8 (42 GW)
+E5 seuil de chauffage estimé : 16 °C ; pente sous le seuil : 2150 MW par °C en moins ; au-dessus de 20 °C : 333 MW par °C (climatisation)
+E5b thermosensibilité maximale à 8 h (2555 MW/°C), minimale à 15 h (1784 MW/°C)
+E6 Jour ouvré normal : rapport médian 1.036 (1724 jours)
+E6 Pont : rapport médian 0.965 (19 jours)
+E6 Férié (en semaine) : rapport médian 0.907 (59 jours)
+E6 Samedi : rapport médian 0.931 (361 jours)
+E6 Dimanche : rapport médian 0.889 (346 jours)
+E6c vacances, 0 zone(s) : écart médian 0.31 GW (1095 jours)
+E6c vacances, 1 zone(s) : écart médian -0.33 GW (123 jours)
+E6c vacances, 2 zone(s) : écart médian -0.26 GW (127 jours)
+E6c vacances, 3 zone(s) : écart médian -0.46 GW (366 jours)
+E7 écart à 2019 (%) par année : 2018=0.8, 2019=0, 2020=-4.6, 2021=-3.4, 2022=-4.1, 2023=-5.8, 2024=-5.5
+E8 ACF horaire : retard 1 h = 0.982, 24 h = 0.935, 168 h = 0.893
+E8 ACF journalière : retard 1 j = 0.948, 7 j = 0.885, 14 j = 0.804
+E8 STL : amplitude hebdomadaire 7.01 GW ; écart-type du reste 4.25 GW ; écart-type de la série 10.32 GW
+E9 jours utilisables pour la comparaison : 2263
+E9 MAE moyenne, Cible : lundi à vendredi, Dernier relevé connu (12 h) : 6010 MW
+E9 MAE moyenne, Cible : lundi à vendredi, Même heure 7 jours avant : 3463 MW
+E9 MAE moyenne, Cible : lundi à vendredi, Même heure la veille (si h <= 12) : 2251 MW
+E9 MAE moyenne, Cible : samedi et dimanche, Dernier relevé connu (12 h) : 8586 MW
+E9 MAE moyenne, Cible : samedi et dimanche, Même heure 7 jours avant : 3049 MW
+E9 MAE moyenne, Cible : samedi et dimanche, Même heure la veille (si h <= 12) : 3728 MW
