@@ -80,3 +80,18 @@ summarise_models <- function(df) {
   # 3) assemble les deux tableaux côte à côte, aligné sur la colonne "model"
   left_join(hourly, daily, by = "model")
 }
+
+# ---- Lignes communes à tous les modèles -------------------------------
+# Retire les JOURNÉES où au moins une prévision ou une cible manque,
+# pour TOUS les modèles à la fois : les modèles sont ainsi comparés
+# sur exactement les mêmes dates, avec 24 heures par journée.
+common_rows <- function(df) {
+  jours_ko <- df |>
+    filter(is.na(y_pred) | is.na(y_true)) |>
+    distinct(target_date)
+  out <- df |> anti_join(jours_ko, by = "target_date")
+  message(nrow(jours_ko), " journée(s) retirée(s) pour tous les modèles")
+  chk <- out |> count(model, target_date)
+  stopifnot(all(chk$n == 24))      # chaque journée gardée a bien 24 heures
+  out
+}
