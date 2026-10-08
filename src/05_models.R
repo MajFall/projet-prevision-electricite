@@ -48,3 +48,49 @@ saveRDS(fc_all, file.path(DIR_PROC, "prev_modeles_validation.rds"))
 res <- summarise_models(common_rows(fc_all))
 write.csv(res, file.path(DIR_OUT, "b02_metriques_modeles_validation.csv"), row.names = FALSE)
 print(res)
+
+# =====================================================================
+# Modèles 2 et 3 : + température (opérationnelle, puis "parfaite")
+# =====================================================================
+add_meteo <- function(d) d |> mutate(
+  # opérationnel : température observée AVANT 14h le jour J
+  chauf_24  = pmax(16 - temp_moy_24h, 0),  clim_24  = pmax(temp_moy_24h - 20, 0),
+  chauf_72  = pmax(16 - temp_moy_72h, 0),
+  chauf_der = pmax(16 - temp_derniere, 0), clim_der = pmax(temp_derniere - 20, 0),
+  # parfaite : température OBSERVÉE de J+1 (borne de performance, non déployable)
+  chauf_parf = pmax(16 - parf_temp_horaire, 0), clim_parf = pmax(parf_temp_horaire - 20, 0),
+  chauf_parf_jour = pmax(16 - parf_temp_moy_jour, 0)
+)
+train2 <- add_meteo(train)
+valid2 <- add_meteo(valid)
+
+fit_pred <- function(extra, nom) {
+  f_m <- as.formula(paste("conso_cible ~", termes, extra, "+ conso_lag1"))
+  f_a <- as.formula(paste("conso_cible ~", termes, extra))
+  fm <- lm(f_m, data = filter(train2, h_loc <= LAST_KNOWN_HOUR))
+  fa <- lm(f_a, data = filter(train2, h_loc >  LAST_KNOWN_HOUR))
+  stopifnot(!anyNA(coef(fm)), !anyNA(coef(fa)))
+  i_m <- valid2$h_loc <= LAST_KNOWN_HOUR
+  p <- rep(NA_real_, nrow(valid2))
+  p[i_m]  <- predict(fm, newdata = valid2[i_m, ])
+  p[!i_m] <- predict(fa, newdata = valid2[!i_m, ])
+  to_fc(valid2, p, nom)
+}
+
+extra_oper <- "+ chauf_24 + clim_24 + chauf_72 + chauf_der + clim_der"
+extra_parf <- paste(extra_oper, "+ chauf_parf + clim_parf + chauf_parf_jour")
+
+# GARDE-FOU : la variante opérationnelle ne doit contenir aucune colonne parf_*
+# ni dérivée de parf_* (chauf_parf, clim_parf, chauf_parf_jour)
+stopifnot(!grepl("parf", extra_oper))
+
+fc_all2 <- bind_rows(
+  fc_all,
+  fit_pred(extra_oper, "lm_meteo_oper"),
+  fit_pred(extra_parf, "lm_meteo_parfaite")
+)
+saveRDS(fc_all2, file.path(DIR_PROC, "prev_modeles_validation.rds"))
+
+res2 <- summarise_models(common_rows(fc_all2))
+write.csv(res2, file.path(DIR_OUT, "b03_metriques_meteo_validation.csv"), row.names = FALSE)
+print(res2)
