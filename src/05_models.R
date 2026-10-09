@@ -111,7 +111,7 @@ stopifnot(!any(grepl("^parf_", vars_oper)))
 to_mat <- function(d, v) as.matrix(mutate(select(d, all_of(v)), across(everything(), as.numeric)))
 
 params_xgb <- list(objective = "reg:squarederror", eta = 0.05, max_depth = 6,
-                   subsample = 0.8, colsample_bytree = 0.8, nthread = 2)
+                   subsample = 0.8, colsample_bytree = 0.8, nthread = 2 , seed = 123)
 NROUNDS <- 400
 
 fit_xgb <- function(v, nom) {
