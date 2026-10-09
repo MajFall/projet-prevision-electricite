@@ -4,12 +4,12 @@
 
 Scripts : `01_download.R`, `02_prepare.R`, `03_features.R`
 
-- [ ] Récupérer éCO2mix et SYNOP
-- [ ] Passer les données au pas horaire
-- [ ] Traiter valeurs manquantes, changements d'heure et valeurs atypiques
-- [ ] Faire l'exploration (cycles, relation température-consommation, jours fériés, ruptures)
-- [ ] Construire les variables : calendrier, retards, météo (disponibles à 14h)
-- [ ] Construire la variante « météo parfaite »
+- [x] Récupérer éCO2mix et SYNOP
+- [x] Passer les données au pas horaire
+- [x] Traiter valeurs manquantes, changements d'heure et valeurs atypiques
+- [x] Faire l'exploration (cycles, relation température-consommation, jours fériés, ruptures)
+- [x] Construire les variables : calendrier, retards, météo (disponibles à 14h)
+- [x] Construire la variante « météo parfaite »
 - [ ] Rédiger les sections 2 (données) et 3 (exploration) du rapport
 
 ### Maj: évaluation et modèles
