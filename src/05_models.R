@@ -94,3 +94,42 @@ saveRDS(fc_all2, file.path(DIR_PROC, "prev_modeles_validation.rds"))
 res2 <- summarise_models(common_rows(fc_all2))
 write.csv(res2, file.path(DIR_OUT, "b03_metriques_meteo_validation.csv"), row.names = FALSE)
 print(res2)
+
+# =====================================================================
+# Modèles 4 et 5 : gradient boosting (xgboost), même information que le linéaire
+# Hyperparamètres FIXES, choisis a priori : la validation ne sert qu'à mesurer.
+# =====================================================================
+library(xgboost)
+set.seed(123)
+
+vars_oper <- c(VARS$calendrier, VARS$retards, VARS$meteo_operationnelle)
+vars_parf <- c(vars_oper, VARS$meteo_parfaite)   # borne de performance uniquement
+
+# GARDE-FOU : la variante opérationnelle ne contient aucune colonne parf_*
+stopifnot(!any(grepl("^parf_", vars_oper)))
+
+to_mat <- function(d, v) as.matrix(mutate(select(d, all_of(v)), across(everything(), as.numeric)))
+
+params_xgb <- list(objective = "reg:squarederror", eta = 0.05, max_depth = 6,
+                   subsample = 0.8, colsample_bytree = 0.8, nthread = 2)
+NROUNDS <- 400
+
+fit_xgb <- function(v, nom) {
+  dtrain <- xgb.DMatrix(data = to_mat(train, v), label = train$conso_cible)
+  m <- xgb.train(params = params_xgb, data = dtrain, nrounds = NROUNDS, verbose = 0)
+  p <- predict(m, xgb.DMatrix(data = to_mat(valid, v)))
+  list(model = m, fc = to_fc(valid, p, nom))
+}
+
+xo <- fit_xgb(vars_oper, "xgb_meteo_oper")
+xp <- fit_xgb(vars_parf, "xgb_meteo_parfaite")
+
+cat("\nVariables les plus utilisées (xgb_meteo_oper) :\n")
+print(head(xgb.importance(model = xo$model), 10))
+
+fc_all3 <- bind_rows(fc_all2, xo$fc, xp$fc)
+saveRDS(fc_all3, file.path(DIR_PROC, "prev_modeles_validation.rds"))
+
+res3 <- summarise_models(common_rows(fc_all3))
+write.csv(res3, file.path(DIR_OUT, "b04_metriques_xgboost_validation.csv"), row.names = FALSE)
+print(res3)
