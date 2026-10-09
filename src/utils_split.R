@@ -29,7 +29,9 @@ rolling_forecast <- function(data, origin_dates, fit_fun, predict_fun, model_nam
       # RÈGLE ANTI-FUITE : on n'apprend que sur des jours J+1 déjà COMPLETS
       # à 14h le jour J, c'est-à-dire target_date < J.
       # (target_date == J serait un jour dont l'après-midi n'est pas encore observé.)
-      train <- data |> filter(target_date >= train_start, target_date < J)
+      train <- data |>
+        filter(target_date >= train_start, target_date < J,
+               !(target_date >= CONFINEMENT_DEBUT & target_date <= CONFINEMENT_FIN))
       stopifnot(nrow(train) > 0, max(train$target_date) < J)
       fit <- fit_fun(train)
     }
