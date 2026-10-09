@@ -75,13 +75,13 @@ Ou étape par étape (toujours depuis la racine du projet) :
 
 | Étape | Script | Rôle | Durée approx. |
 |---|---|---|---|
-| 1 | `src/01_download.R` | Téléchargement des données | [long] |
-| 2 | `src/02_prepare.R` | Nettoyage, pas horaire, agrégation | [x min] |
+| 1 | `src/01_download.R` | Téléchargement des données | environ 2 min 30 |
+| 2 | `src/02_prepare.R` | Nettoyage, pas horaire, agrégation | environ 28 s |
 | 2b | `src/02b_controles.R` | Contrôles qualité C1 à C9b | [x min] |
 | 2c | `src/02c_exploration.R` | Figures d'exploration e01 à e09 | [x min] |
-| 3 | `src/03_features.R` | Variables calendaires, retards, météo | [x min] |
-| 4 | `src/04_benchmarks.R` | Benchmarks | [x min] |
-| 5 | `src/05_models.R` | Apprentissage et prévisions | [long] |
+| 3 | `src/03_features.R` | Variables calendaires, retards, météo | environ 14 s |
+| 4 | `src/04_benchmarks.R` | Benchmarks | environ 4,5 s |
+| 5 | `src/05_models.R` | Apprentissage et prévisions | environ 11 s |
 | 6 | `src/06_evaluate.R` | Métriques, figures, tableaux | [x min] |
 
 ## 7. Organisation des fichiers
