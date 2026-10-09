@@ -41,21 +41,32 @@ elles sont téléchargées par le script `01_download.R`.
 
 ## 3. Protocole d'évaluation
 
-- Apprentissage : [période]
-- Validation : [période]
-- Test final : [période], utilisé une seule fois, à la fin
-- Fréquence de ré-estimation : [fixe / glissante / extensive]
-- Métriques : MAE, RMSE, erreur sur le total journalier, sur la valeur et l'heure de la pointe
-- Les méthodes sont comparées sur les mêmes dates et avec la même information.
+| Période | Dates | Usage |
+|---|---|---|
+| Apprentissage | 2018-01-01 → 2023-12-31, hors premier confinement (17/03 → 11/05/2020) | ajustement des modèles |
+| Validation | 2024 | mesures et diagnostics, aucune sélection automatique |
+| Test final | 2025 | exécuté **une seule fois** (`src/06_evaluate.R`) |
+
+- **Réestimation :** sur la validation, chaque modèle est ajusté une fois sur l'apprentissage. Pour le test, un seul refit sur 2018-2024 (hors confinement), mêmes formules et mêmes hyperparamètres, sans réestimation pendant 2025.
+- **Hyperparamètres :** xgboost avec des valeurs fixées a priori (`eta = 0.05`, `max_depth = 6`, 400 arbres, `subsample = 0.8`, `colsample_bytree = 0.8`), non réglées.
+- **Métriques :** MAE, RMSE, erreur sur le total journalier, sur la valeur de la pointe et sur son heure (`src/utils_metrics.R`), détaillées par saison, type de jour et heure.
+- **Mêmes dates pour tous :** `common_rows()` retire les journées où une prévision manque (2 journées en validation, 3 en test) pour **tous** les modèles. Les jours à 23 h ou 25 h sont hors du score principal.
+- **Protection du test :** le modèle retenu (`lm_meteo_oper`) a été déclaré avant le test. Un tag Git `avant-test-2025` fige l'état précédent, et `06_evaluate.R` refuse de se relancer (fichier `results/TEST_2025_EXECUTE.txt`).
 
 ## 4. Modèles comparés
 
-| Modèle | Rôle | Fichier |
-|---|---|---|
-| Veille (même heure) | Benchmark | `src/04_benchmarks.R` |
-| Même jour semaine précédente | Benchmark | `src/04_benchmarks.R` |
-| [Régression simple] | Modèle simple | `src/05_models.R` |
-| [Modèle élaboré] | Modèle plus complexe | `src/05_models.R` |
+| Modèle | Rôle | Météo utilisée | Fichier |
+|---|---|---|---|
+| `veille` | Benchmark | aucune | `src/04_benchmarks.R` |
+| `semaine_precedente` | Benchmark | aucune | `src/04_benchmarks.R` |
+| `lm_calendrier_retards` | Modèle simple | aucune | `src/05_models.R` |
+| `lm_meteo_oper` | **Modèle retenu** | observée avant 14 h le jour J | `src/05_models.R` |
+| `xgb_meteo_oper` | Modèle élaboré (concurrent) | observée avant 14 h le jour J | `src/05_models.R` |
+| `lm_meteo_parfaite`, `xgb_meteo_parfaite` | **Borne de performance, non déployable** | observée de J+1 | `src/05_models.R` |
+
+- `veille` recopie l'heure de J jusqu'à 12 h (seule partie connue à 14 h) et J-1 au-delà.
+- Les modèles linéaires sont ajustés séparément pour les heures ≤ 12 (avec `conso_lag1`) et > 12 (sans).
+- Ablation par groupes de variables (xgboost) : `src/05b_ablation.R`.
 
 ## 5. Installation
 
@@ -75,14 +86,15 @@ Ou étape par étape (toujours depuis la racine du projet) :
 
 | Étape | Script | Rôle | Durée approx. |
 |---|---|---|---|
-| 1 | `src/01_download.R` | Téléchargement des données | environ 2 min 30 |
-| 2 | `src/02_prepare.R` | Nettoyage, pas horaire, agrégation | environ 28 s |
-| 2b | `src/02b_controles.R` | Contrôles qualité C1 à C9b | [x min] |
-| 2c | `src/02c_exploration.R` | Figures d'exploration e01 à e09 | [x min] |
-| 3 | `src/03_features.R` | Variables calendaires, retards, météo | environ 14 s |
-| 4 | `src/04_benchmarks.R` | Benchmarks | environ 4,5 s |
-| 5 | `src/05_models.R` | Apprentissage et prévisions | environ 11 s |
-| 6 | `src/06_evaluate.R` | Métriques, figures, tableaux | [x min] |
+| 1 | `src/01_download.R` | Téléchargement des données | ~ 2 min 30 |
+| 2 | `src/02_prepare.R` | Nettoyage, pas horaire, agrégation | ~ 28 s |
+| 2b | `src/02b_controles.R` | Contrôles qualité C1 à C9b | ~11.95  |
+| 2c | `src/02c_exploration.R` | Figures d'exploration e01 à e09 | ~10.23 |
+| 3 | `src/03_features.R` | Variables calendaires, retards, météo | ~ 14 s |
+| 4 | `src/04_benchmarks.R` | Benchmarks | ~ 4,5 s |
+| 5 | `src/05_models.R` | Apprentissage et prévisions | ~ 11 s |
+| 5b | `src/05b_ablation.R` | Ablation météo / calendrier / retards | ~ 9.18 s |
+| 6 | `src/06_evaluate.R` | Test 2025 (une seule exécution), tableaux et figures | ~16 s |
 
 ## 7. Organisation des fichiers
 
@@ -95,6 +107,10 @@ Ou étape par étape (toujours depuis la racine du projet) :
 │   ├── raw/                # données brutes (non versionnées)
 │   └── processed/          # données préparées (non versionnées)
 ├── src/                    # scripts numérotés, dans l'ordre d'exécution
+│   ├── config.R            # paramètres d'évaluation (lit 00_config.R)
+│   ├── utils_metrics.R     # métriques et lignes communes
+│   ├── utils_bench.R       # benchmarks et garde-fous de disponibilité
+│   └── utils_split.R       # évaluation glissante (essai, non utilisé dans la chaîne finale)
 ├── notebooks/              # exploration
 ├── results/                # figures et tableaux produits par le code
 ├── report/                 # rapport et diapositives
@@ -103,16 +119,16 @@ Ou étape par étape (toujours depuis la racine du projet) :
 
 ## 8. Étapes coûteuses
 
-- Téléchargement des données : connexion nécessaire ; un fichier éCO2mix et un fichier SYNOP par mois (96 fichiers) ; [durée à renseigner]. Le script saute les fichiers déjà valides.
-- Entraînement des modèles : [durée]
-- Résultats mis en cache : [oui/non, où]
+- **Téléchargement :** ~2,5 min sur notre connexion, 96 fichiers SYNOP + éCO2mix (~16 Mo) ; connexion nécessaire. Les fichiers déjà valides ne sont pas retéléchargés.
+- **Entraînement :** quelques secondes à ~15 s par script, rien de coûteux.
+- **Test 2025 :** `06_evaluate.R` refuse de se relancer. `run_all.R` active `REFAIRE_TEST = "1"` pour la vérification de reproductibilité uniquement.
 
 ## 9. Reproductibilité
 
-- Graine aléatoire fixée avec `set.seed([valeur])`.
-- Dépendances ajoutées par l'étape données : `ggplot2`, `scales` (lancer `renv::snapshot()` après installation).
+- Graine : `seed = 123` dans `params_xgb` (xgboost). Les modèles linéaires sont déterministes.
+- Versions de R : lockfile généré avec R 4.4.1, résultats obtenus avec R 4.5.2. `xgboost` n'est pas encore dans `renv.lock` : [à ajouter].
 - Horodatages traités en UTC, convertis en heure locale uniquement pour le calendrier.
-- Statistiques de transformation (moyennes, écarts-types) calculées sur l'apprentissage seulement.
+- Les statistiques apprises (coefficients, arbres) viennent de l'apprentissage seulement ; la météo parfaite n'entre jamais dans les modèles opérationnels (garde-fous `stopifnot`).
 - Tableau de disponibilité des variables : `Docs/disponibilite_variables.md`.
 
 ## 10. Usage d'outils d'IA
