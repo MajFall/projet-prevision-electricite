@@ -1,0 +1,8 @@
+"model","automne","ete","hiver","printemps"
+"lm_calendrier_retards",1360,1040,2173,1272
+"lm_meteo_oper",1307,996,2063,1277
+"lm_meteo_parfaite",1016,903,1467,1053
+"semaine_precedente",2682,1793,5500,3838
+"veille",3037,2737,3705,3216
+"xgb_meteo_oper",1156,824,2165,1278
+"xgb_meteo_parfaite",855,698,1511,879

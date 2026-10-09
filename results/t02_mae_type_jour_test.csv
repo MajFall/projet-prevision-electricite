@@ -1,0 +1,8 @@
+"model","ferie","semaine","weekend"
+"lm_calendrier_retards",2606,1435,1387
+"lm_meteo_oper",2781,1376,1333
+"lm_meteo_parfaite",2995,1052,1040
+"semaine_precedente",4621,3298,3653
+"veille",3652,2765,4124
+"xgb_meteo_oper",1320,1342,1375
+"xgb_meteo_parfaite",1154,966,1007
