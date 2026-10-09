@@ -101,21 +101,36 @@ Ou étape par étape (toujours depuis la racine du projet) :
 ```
 ├── README.md
 ├── projet-prevision-electricite.Rproj
-├── renv.lock               # versions exactes des packages
+├── renv.lock               # versions des packages
 ├── run_all.R               # lance toute la chaîne
-├── data/
-│   ├── raw/                # données brutes (non versionnées)
-│   └── processed/          # données préparées (non versionnées)
-├── src/                    # scripts numérotés, dans l'ordre d'exécution
+├── data/                   # NON versionné (régénéré par les scripts)
+│   ├── raw/                # eco2mix_cons_def.csv, calendrier_scolaire.csv, synop/ (96 fichiers)
+│   └── processed/          # voir tableau ci-dessous
+├── src/
+│   ├── 00_config.R         # paramètres globaux (dates, latences, stations)
+│   ├── 01_download.R … 03_features.R   # données et variables
+│   ├── 02b_controles.R, 02c_exploration.R
+│   ├── 04_benchmarks.R, 05_models.R, 05b_ablation.R, 06_evaluate.R
 │   ├── config.R            # paramètres d'évaluation (lit 00_config.R)
 │   ├── utils_metrics.R     # métriques et lignes communes
 │   ├── utils_bench.R       # benchmarks et garde-fous de disponibilité
-│   └── utils_split.R       # évaluation glissante (essai, non utilisé dans la chaîne finale)
-├── notebooks/              # exploration
-├── results/                # figures et tableaux produits par le code
-├── report/                 # rapport et diapositives
-└── Docs/                   # sujet, tableau de disponibilité, journal d'usage de l'IA
+│   └── utils_split.R       # évaluation glissante (essai, non utilisée dans la chaîne finale)
+├── results/                # tableaux et figures (versionnés)
+├── report/                 # rapport PDF et diapositives
+└── Docs/                   # sujet, tableau de disponibilité, journal IA, répartition
 ```
+
+### Fichiers produits
+
+| Fichier | Produit par | Contenu |
+|---|---|---|
+| `data/processed/master_horaire.rds` | `02_prepare.R` | grille horaire 2018-2025 |
+| `data/processed/cas_horaires.rds`, `variables_modele.rds` | `03_features.R` | table de prévision et listes de variables |
+| `data/processed/prev_benchmarks_validation.rds`, `prev_modeles_validation.rds` | `04`, `05` | prévisions sur la validation 2024 |
+| `data/processed/prev_test_2025.rds` | `06_evaluate.R` | prévisions sur le test 2025 |
+| `results/c*.csv`, `e*.png`, `f01_*.csv` | `02b`, `02c`, `03` | contrôles qualité, exploration, valeurs manquantes |
+| `results/b01` à `b05` | `04`, `05`, `05b` | métriques sur la validation |
+| `results/t01` à `t05`, `TEST_2025_EXECUTE.txt` | `06_evaluate.R` | résultats du test et trace d'exécution |
 
 ## 8. Étapes coûteuses
 
