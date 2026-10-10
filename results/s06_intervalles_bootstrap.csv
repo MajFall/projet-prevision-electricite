@@ -1,0 +1,10 @@
+comparaison,metrique,ecart_moyen,ic95_bas,ic95_haut
+xgb_meteo_oper - lm_meteo_oper,MAE_jour,-56,-132,16
+xgb_meteo_oper - lm_meteo_oper,abs_total,1461,-660,3452
+xgb_meteo_oper - lm_meteo_oper,abs_pointe,111,8,215
+lm_meteo_oper - lm_calendrier_retards,MAE_jour,-51,-103,-1
+lm_meteo_oper - lm_calendrier_retards,abs_total,-1762,-3340,-227
+lm_meteo_oper - lm_calendrier_retards,abs_pointe,-77,-142,-14
+lm_meteo_oper - veille,MAE_jour,-1763,-1966,-1563
+lm_meteo_oper - veille,abs_total,-44672,-49818,-39390
+lm_meteo_oper - veille,abs_pointe,-1955,-2237,-1680
