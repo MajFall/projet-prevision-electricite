@@ -1,4 +1,4 @@
-# Journal d'usage de l'IA (étape données)
+# Journal d'usage de l'IA
 
 | # | Tâche | Proposition de l'IA | Décision | Vérification |
 |---|---|---|---|---|
@@ -10,3 +10,8 @@
 | 6 | Vacances scolaires | Ajouter le nombre de zones A/B/C en vacances (0 à 3) | Conservée ; filtre sur les zones A, B, C et la population « élèves » | Dates de reprise vérifiées sur 8 jours précis (20/12/2024, 05-06/01/2025, 15/08 et 01-02/09/2025) ; 56 jours de confinement repérés |
 | 7 | Observations atypiques | Écart à la médiane du même mois, jour de semaine et heure | Modifiée : la liste ne contenait que des jours de grand froid ; ajout d'un contrôle de pics isolés (heure comparée à ses voisines) | Relevé des samedis d'avril 2022 à 7 h : la consommation suit la température (61 GW à 1,7 °C, 39 GW à 11 °C) |
 | 8 | Simplification des scripts 01 à 03 | Réécriture en blocs courts, sans gestion d'erreurs cachée | Conservée après exécution | Mêmes chiffres de contrôle qu'avant la réécriture (70 128 heures, 32 doublons, 88 fériés, 70 104 cas) |
+| 9 | Poids des stations SYNOP | Mesurer la sensibilité plutôt que changer les poids (`02d_sensibilite_poids.R`) | Conservée : poids du projet gardés, ils donnent la meilleure corrélation température-consommation en hiver | Exécution ; tableau `s01_sensibilite_poids.csv` ; écart moyen de température 0,5 à 0,7 °C entre variantes |
+| 10 | Protection du test 2025 | `run_all.R` ne relance `06_evaluate.R` que si la trace n'existe pas | Conservée | Test de `run_all.R` : message « non relancé », résultats `t01` à `t05` identiques ; tag `avant-test-2025` antérieur au commit du test sur GitHub |
+| 11 | Analyse des erreurs du test | `07_analyse_echecs.R` : pires journées, variation de température, biais par mois, intervalles bootstrap par journées | Conservée ; une première lecture (« 7 pires jours sur 10 expliqués par la météo ») corrigée à 8 sur 10 d'après les valeurs du script | Exécution et relecture des tableaux ; météo de novembre 2025 recoupée avec le bulletin climatique de Météo-France |
+| 12 | Pistes sur le calendrier | Trois variantes (vacances, fériés en jours ouvrés, fin d'année en deux blocs) dans `05c_pistes.R` | Rejetées : aucune amélioration sur la validation 2024 ni sur le contrôle 2023 ; une hypothèse de l'IA (dimanche après férié mal traité) infirmée | Exécution ; tableaux `b06_*.csv` |
+| 13 | Première version de `05c_pistes.R` | Assemblage des prévisions incorrect : les variantes linéaires manquaient dans la sortie | Corrigée, avec un contrôle bloquant sur le nombre de variantes | Relecture de la sortie console par Alioune |

@@ -1,0 +1,8 @@
+model,froid_<5C,intermediaire_5-16C,doux_>=16C
+lm_calendrier_retards,2333,1577,1046
+lm_meteo_oper,2136,1563,986
+lm_meteo_parfaite,1585,1155,908
+semaine_precedente,7864,3696,1832
+veille,3725,3337,2781
+xgb_meteo_oper,2256,1573,787
+xgb_meteo_parfaite,1671,1062,680

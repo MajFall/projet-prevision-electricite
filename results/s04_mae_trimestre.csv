@@ -1,0 +1,8 @@
+model,T1,T2,T3,T4
+lm_calendrier_retards,2030,1154,923,1748
+lm_meteo_oper,1956,1156,882,1658
+lm_meteo_parfaite,1373,1033,841,1197
+semaine_precedente,6229,2121,1605,3896
+veille,3670,3126,2635,3270
+xgb_meteo_oper,2174,918,748,1594
+xgb_meteo_parfaite,1515,737,669,1030

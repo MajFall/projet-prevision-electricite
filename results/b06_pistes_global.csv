@@ -1,0 +1,15 @@
+evaluation,model,MAE,RMSE,MAE_total_jour,MAE_pointe
+validation_2024,lm_base,1380,1972,26624,1384
+validation_2024,lm_ferie_et_fin_annee,1385,1981,26744,1375
+validation_2024,lm_ferie_jours_ouvres,1385,1977,26706,1376
+validation_2024,lm_fin_annee_2_blocs,1380,1974,26636,1382
+validation_2024,lm_sans_vacances,1378,1969,26519,1382
+validation_2024,xgb_base,1380,1980,29109,1487
+validation_2024,xgb_sans_vacances,1373,1980,29031,1478
+controle_2023,lm_base,1416,1954,27076,1327
+controle_2023,lm_ferie_et_fin_annee,1437,1982,27912,1336
+controle_2023,lm_ferie_jours_ouvres,1434,1978,27798,1334
+controle_2023,lm_fin_annee_2_blocs,1416,1956,27161,1326
+controle_2023,lm_sans_vacances,1412,1953,26993,1326
+controle_2023,xgb_base,1480,2115,31427,1485
+controle_2023,xgb_sans_vacances,1451,2081,30528,1430

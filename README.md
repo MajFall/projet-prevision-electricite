@@ -35,6 +35,7 @@ utilisé que comme borne de performance, jamais comme méthode déployable.
 - Latences supposées : 1 h pour la consommation et pour la météo (`LATENCE_CONSO_H`, `LATENCE_METEO_H`).
 - Table de prévision (`src/03_features.R`) : une ligne par heure cible de J+1, avec uniquement l'information connue à 14 h le jour J (calendrier de J+1 dont vacances scolaires, consommation retardée `conso_lag1` / `conso_lag7`, niveaux récents, météo observée de J). Les colonnes `parf_*` forment la variante « météo parfaite ». Sortie : `data/processed/cas_horaires.rds` ; listes de variables : `variables_modele.rds`.
 - Contrôles qualité C1 à C9b : `src/02b_controles.R` (tableaux dans `results/`). Exploration : `src/02c_exploration.R` (figures e01 à e09, période 2018-2024 uniquement).
+- Poids des stations : `src/02d_sensibilite_poids.R` compare quatre jeux de poids (actuel, égaux, plafonnés à 3, racine) sur 2018-2024. Les poids actuels donnent la meilleure corrélation température-consommation en hiver ; ils sont conservés (`results/s01_sensibilite_poids.csv`).
 
 Les données brutes ne sont pas versionnées (trop volumineuses) :
 elles sont téléchargées par le script `01_download.R`.
@@ -67,10 +68,11 @@ elles sont téléchargées par le script `01_download.R`.
 - `veille` recopie l'heure de J jusqu'à 12 h (seule partie connue à 14 h) et J-1 au-delà.
 - Les modèles linéaires sont ajustés séparément pour les heures ≤ 12 (avec `conso_lag1`) et > 12 (sans).
 - Ablation par groupes de variables (xgboost) : `src/05b_ablation.R`.
+- Pistes exploratoires (validation seulement, aucune retenue) : `src/05c_pistes.R`, voir section 11.
 
 ## 5. Installation
 
-Prérequis : R (version 4.4.1 ou supérieure) et RStudio.
+Prérequis : R (4.5.2 utilisé pour les résultats) et RStudio.
 
 1. Cloner le dépôt :
    `git clone https://github.com/MajFall/projet-prevision-electricite.git`
@@ -88,13 +90,16 @@ Ou étape par étape (toujours depuis la racine du projet) :
 |---|---|---|---|
 | 1 | `src/01_download.R` | Téléchargement des données | ~ 2 min 30 |
 | 2 | `src/02_prepare.R` | Nettoyage, pas horaire, agrégation | ~ 28 s |
-| 2b | `src/02b_controles.R` | Contrôles qualité C1 à C9b | ~11.95  |
-| 2c | `src/02c_exploration.R` | Figures d'exploration e01 à e09 | ~10.23 |
+| 2b | `src/02b_controles.R` | Contrôles qualité C1 à C9b | ~ 12 s |
+| 2c | `src/02c_exploration.R` | Figures d'exploration e01 à e09 | ~ 10 s |
+| 2d | `src/02d_sensibilite_poids.R` | Sensibilité de la température aux poids des stations | < 1 min |
 | 3 | `src/03_features.R` | Variables calendaires, retards, météo | ~ 14 s |
 | 4 | `src/04_benchmarks.R` | Benchmarks | ~ 4,5 s |
 | 5 | `src/05_models.R` | Apprentissage et prévisions | ~ 11 s |
-| 5b | `src/05b_ablation.R` | Ablation météo / calendrier / retards | ~ 9.18 s |
-| 6 | `src/06_evaluate.R` | Test 2025 (une seule exécution), tableaux et figures | ~16 s |
+| 5b | `src/05b_ablation.R` | Ablation météo / calendrier / retards | ~ 9 s |
+| 5c | `src/05c_pistes.R` | Pistes exploratoires (vacances, fériés, fin d'année), validation 2024 et contrôle 2023 | < 1 min |
+| 6 | `src/06_evaluate.R` | Test 2025 (une seule exécution), tableaux et figures | ~ 16 s |
+| 7 | `src/07_analyse_echecs.R` | Analyse des erreurs du test 2025, à partir des prévisions déjà enregistrées | < 1 min |
 
 ## 7. Organisation des fichiers
 
@@ -109,14 +114,14 @@ Ou étape par étape (toujours depuis la racine du projet) :
 ├── src/
 │   ├── 00_config.R         # paramètres globaux (dates, latences, stations)
 │   ├── 01_download.R … 03_features.R   # données et variables
-│   ├── 02b_controles.R, 02c_exploration.R
-│   ├── 04_benchmarks.R, 05_models.R, 05b_ablation.R, 06_evaluate.R
+│   ├── 02b_controles.R, 02c_exploration.R, 02d_sensibilite_poids.R
+│   ├── 04_benchmarks.R, 05_models.R, 05b_ablation.R, 05c_pistes.R
+│   ├── 06_evaluate.R, 07_analyse_echecs.R
 │   ├── config.R            # paramètres d'évaluation (lit 00_config.R)
 │   ├── utils_metrics.R     # métriques et lignes communes
 │   ├── utils_bench.R       # benchmarks et garde-fous de disponibilité
 │   └── utils_split.R       # évaluation glissante (essai, non utilisée dans la chaîne finale)
 ├── results/                # tableaux et figures (versionnés)
-├── report/                 # rapport PDF et diapositives
 └── Docs/                   # sujet, tableau de disponibilité, journal IA, répartition
 ```
 
@@ -130,18 +135,21 @@ Ou étape par étape (toujours depuis la racine du projet) :
 | `data/processed/prev_test_2025.rds` | `06_evaluate.R` | prévisions sur le test 2025 |
 | `results/c*.csv`, `e*.png`, `f01_*.csv` | `02b`, `02c`, `03` | contrôles qualité, exploration, valeurs manquantes |
 | `results/b01` à `b05` | `04`, `05`, `05b` | métriques sur la validation |
+| `results/b06_*.csv` | `05c_pistes.R` | pistes exploratoires (validation 2024, contrôle 2023) |
+| `results/s01_*.csv` | `02d_sensibilite_poids.R` | sensibilité aux poids des stations |
+| `results/s02` à `s06`, `s05b` | `07_analyse_echecs.R` | analyse des erreurs du test (pires jours, météo, biais par mois, intervalles) |
 | `results/t01` à `t05`, `TEST_2025_EXECUTE.txt` | `06_evaluate.R` | résultats du test et trace d'exécution |
 
 ## 8. Étapes coûteuses
 
 - **Téléchargement :** ~2,5 min sur notre connexion, 96 fichiers SYNOP + éCO2mix (~16 Mo) ; connexion nécessaire. Les fichiers déjà valides ne sont pas retéléchargés.
 - **Entraînement :** quelques secondes à ~15 s par script, rien de coûteux.
-- **Test 2025 :** `06_evaluate.R` refuse de se relancer. `run_all.R` active `REFAIRE_TEST = "1"` pour la vérification de reproductibilité uniquement.
+- **Test 2025 :** `06_evaluate.R` refuse de se relancer. `run_all.R` ne le relance pas s'il a déjà été exécuté ; une vérification de reproductibilité se fait à la main, hors `run_all.R`, sans rien modifier ensuite.
 
 ## 9. Reproductibilité
 
 - Graine : `seed = 123` dans `params_xgb` (xgboost). Les modèles linéaires sont déterministes.
-- Versions de R : lockfile généré avec R 4.4.1, résultats obtenus avec R 4.5.2. `xgboost` n'est pas encore dans `renv.lock` : [à ajouter].
+- Versions de R : tous les résultats du dépôt ont été obtenus avec R 4.5.2. Les versions de packages de `renv.lock` (dont `xgboost` 3.2.1.1 et `ggplot2` 4.0.3) sont celles de cette session ; le champ `R` du lockfile indique encore 4.4.1, sans conséquence sur les calculs. Avec une autre version de R, `renv::restore()` peut proposer des versions différentes : les résultats chiffrés pourraient alors varier légèrement.
 - Horodatages traités en UTC, convertis en heure locale uniquement pour le calendrier.
 - Les statistiques apprises (coefficients, arbres) viennent de l'apprentissage seulement ; la météo parfaite n'entre jamais dans les modèles opérationnels (garde-fous `stopifnot`).
 - Tableau de disponibilité des variables : `Docs/disponibilite_variables.md`.
@@ -150,3 +158,13 @@ Ou étape par étape (toujours depuis la racine du projet) :
 
 Les usages sont consignés dans `Docs/journal_usage_ia.md`
 (trois exemples documentés dans le rapport).
+
+## 11. Analyse des erreurs et pistes exploratoires
+
+Ces deux étapes viennent **après** la lecture du test 2025. Elles n'ont modifié
+ni les modèles, ni `06_evaluate.R`, ni les résultats du test.
+
+- **Analyse des erreurs (`07_analyse_echecs.R`)** : relit les prévisions enregistrées du test. La météo réelle de J+1 sert ici à expliquer les erreurs, jamais à prévoir. Constats : la variation de température entre les 24 h avant 14 h et J+1 explique 8 des 10 pires journées ; les jours de forte variation (≥ 4 °C) ont une MAE de 2072 MW contre 1283 MW en temps stable ; le biais est positif en hiver, en 2024 (validation) comme en 2025 (test). Les écarts entre `xgb_meteo_oper` et `lm_meteo_oper` ne sont pas établis (intervalle bootstrap par journées contenant 0), sauf sur la pointe où xgboost est moins bon.
+- **Pistes (`05c_pistes.R`)** : retirer `n_zones_vacances`, limiter `veille_ferie` / `lendemain_ferie` aux jours ouvrés, découper la fin d'année en deux blocs. Jugées sur la validation 2024 et sur un contrôle 2023. Aucune n'améliore nettement l'erreur : `lm_meteo_oper` reste le modèle retenu. Les gains sans les vacances (2 à 4 MW pour le linéaire) sont trop faibles pour conclure.
+- Les cas de calendrier rares (2 novembre 2025, 26-31 décembre 2025) sont présentés comme une limite du modèle.
+- Explication a posteriori de novembre 2025 : bulletin climatique de Météo-France (novembre 2025), jamais utilisé comme variable.

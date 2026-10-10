@@ -1,0 +1,8 @@
+model,stable_<2C,variation_2-4C,forte_variation_>=4C
+lm_calendrier_retards,1267,1650,2291
+lm_meteo_oper,1283,1506,2072
+lm_meteo_parfaite,1060,1178,1221
+semaine_precedente,3451,3424,3366
+veille,2874,3374,4890
+xgb_meteo_oper,1236,1446,1945
+xgb_meteo_parfaite,956,1019,1065
